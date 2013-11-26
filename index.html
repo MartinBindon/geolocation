@@ -62,7 +62,7 @@
 			</div><!-- /footer -->
 
 			<div id="my-activity" data-role="content">
-				<button type = "submit" name = "getPositionButton" onClick="refreshLocation()"> Get Position </button>	
+				<button type = "submit" name = "getPositionButton" onClick="getCurrentPosition()"> Get Position </button>	
 				<ul data=role="list-view" id="my-activity-list"></ul>
 			</div><!-- /content -->
 
@@ -154,7 +154,19 @@
 </div> <!--! end of #container -->
 
 
+<script>
+	function getCurrentPosition() {
+		navigator.geolocation.getCurrentPosition(success, fail);
 
+		function success(position) {
+			alert('Your position is: 'position);
+		}
+		function fail(error) {
+			alert('I am unable to show your position at present.')
+		}
+	}
+
+</script>
 
 </body>
 </html>
