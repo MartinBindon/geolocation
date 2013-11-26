@@ -1,0 +1,160 @@
+<!doctype html>
+<!-- Conditional comment for mobile ie7 blogs.msdn.com/b/iemobile/ -->
+<!--[if IEMobile 7 ]>    <html class="no-js iem7" lang="en"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  	<title>Corks - Cellar your Wine</title>
+
+	<meta name="description" content="">
+
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=false;"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="start_location_here">
+	<!-- For first-generation iPad: -->
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="start_location_hereg">
+	<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+	<link rel="apple-touch-icon-precomposed" href="start_location_here">
+	<link rel="apple-touch-startup-image" href="start_location_here" />  
+	<!-- Main Stylesheet -->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+
+	<!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+	<!-- Google Maps -->
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+
+	<!-- DB Creation Scripts -->
+	<script src="global.js"></script>
+	<script src="database.js"></script>
+	<script src="util.js"></script>
+	<script src="geo.js"></script>
+	<script src="social.js"></script>
+
+
+	<!-- For Label Errors -->
+	<style type="text/css" media="screen">
+		label.error  {  
+	      color:#FF0000;  
+	      font-weight:bold;  
+	    }
+	</style>
+</head>
+
+<body>
+	
+		<div id="activity" data-role="page">
+			<div data-role="header">
+			<h1>Your Activity</h1>		
+			<div data-role="navbar" data-iconpos="bottom">
+				<ul>
+					<li><a data-icon="star" class="ui-btn-active" href="#activity">Activity</a></li>
+					<li><a data-icon="grid" href="#manage">Manage</a></li>
+					<li><a data-icon="info" href="#find">Find</a></li>
+					<li><a data-icon="gear" href="#settings">Settings</a></li>
+					<li><a data-icon="search" href="#search">Search</a></li>
+				</ul>
+			</div><!-- /navbar -->
+			</div><!-- /footer -->
+
+			<div id="my-activity" data-role="content">
+				<button type = "submit" name = "getPositionButton" onClick="refreshLocation()"> Get Position </button>	
+				<ul data=role="list-view" id="my-activity-list"></ul>
+			</div><!-- /content -->
+
+			<div data-role="footer">
+				<h4>Page Footer</h4>
+			</div><!-- /footer -->
+		</div>
+
+		<div id="manage" data-role="page">
+			<div data-role="header">
+				<h1>Manage</h1>		
+				<div data-role="navbar" data-iconpos="bottom">
+					<ul>
+						<li><a data-icon="star" href="#activity">Activity</a></li>
+						<li><a data-icon="grid" class="ui-btn-active" href="#manage">Manage</a></li>
+						<li><a data-icon="info" href="#find">Find</a></li>
+						<li><a data-icon="gear" href="#settings">Settings</a></li>
+						<li><a data-icon="search" href="#search">Search</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+
+			<div class="page" data-role="content">
+				<h2>Add A Wine</h2>	
+				<div class="success" id="success-msg" style="display: none;">Awesome, your wine is created!</div>
+				<div class="error" id="error-msg" style="display: none;">You have errors in your form, please check the data.</div>
+				<form id="manage-form" data-ajax="false" onsubmit="handleForm(); return false;">
+					
+					<label for="wine_name">Wine Name:</label>
+					<input type="text" class="required" name="wine_name" id="wine_name" data-mini="true" />
+					
+					<label for="winery_name">Winery Name:</label>
+					<input type="text" class="required" name="winery_name" id="winery_name" data-mini="true" />
+					
+					<label for="color_id" class="select">Color:</label>
+					<select class="required" name="color_id" id="color_id" data-mini="true">
+					</select>
+					
+					<label for="wine_abv">Wine ABV:</label>
+					<input type="text" class="required" nname="wine_abv" id="wine_abv" data-mini="true" />
+					
+					<label for="wine_description">Wine Description:</label>
+					<textarea name="wine_description" id="wine_description"></textarea>
+					
+					<label for="is_add">Do you want to add this wine to your cellar?</label>
+					<input type="checkbox" name="is_add" onchange="toggleBox(this);" id="is_add" class="custom" />
+					
+					<div id="cellar_ques" style="display: none;">
+						
+						<label for="cellar_qty">Cellar Quantity:</label>
+						<input type="text" name="cellar_qty" id="cellar_qty" value=""  />
+					
+						<label for="cellar_description">Cellar Notes:</label>
+						<textarea name="cellar_description" id="cellar_description"></textarea>
+						
+					</div>
+					
+					<button>Add Wine</button>
+					
+				</form>
+							
+			</div><!-- /content -->
+
+		</div>	
+		
+		
+		<!-- Find -->
+		<div id="find" class="page" data-role="page">
+			<div data-role="header" data-position="inline">
+			<h1>Find</h1>
+			<a href="javascript:void(0);" data-role="button" onclick="refreshLocation();" class="ui-btn-right" data-icon="refresh">Refresh</a> 			
+			<div data-role="navbar" data-iconpos="bottom">
+				<ul>
+					<li><a data-icon="star" href="#activity">Activity</a></li>
+					<li><a data-icon="grid" href="#manage">Manage</a></li>
+					<li><a data-icon="info" class="ui-btn-active" href="#find">Find</a></li>
+					<li><a data-icon="gear" href="#settings">Settings</a></li>
+					<li><a data-icon="search" href="#search">Search</a></li>
+				</ul>
+			</div><!-- /navbar -->
+			</div><!-- /footer -->
+			
+			<div id="map" data-role="content" style="height: 500px; width: 100%;"></div><!-- /content -->
+
+
+		</div>
+
+	
+</div> <!--! end of #container -->
+
+
+
+
+</body>
+</html>
